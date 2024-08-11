@@ -64,22 +64,23 @@ def main():
             with st.spinner("수업 설계 생성 중..."):
                 lesson_plan = generate_lesson_plan(subject, achievement_standard, lesson_topic)
 
-            sections = lesson_plan.split("\n\n")
+            st.write(lesson_plan)
+            # sections = lesson_plan.split("\n\n")
             
-            st.subheader("핵심 아이디어")
-            st.write(sections[0])
+            # st.subheader("핵심 아이디어")
+            # st.write(sections[0])
 
-            st.subheader("핵심 개념")
-            st.write(sections[1])
+            # st.subheader("핵심 개념")
+            # st.write(sections[1])
 
-            st.subheader("핵심 질문")
-            st.write(sections[2])
+            # st.subheader("핵심 질문")
+            # st.write(sections[2])
 
-            st.subheader("수업 활동 운영 계획")
-            st.write(sections[3])
+            # st.subheader("수업 활동 운영 계획")
+            # st.write(sections[3])
 
-            st.subheader("평가 루브릭")
-            st.write(sections[4])
+            # st.subheader("평가 루브릭")
+            # st.write(sections[4])
         else:
             st.warning("모든 필드를 입력해주세요.")
 
