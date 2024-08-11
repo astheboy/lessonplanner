@@ -1,6 +1,7 @@
 import streamlit as st
 import openai
 import os
+import re
 
 # OpenAI API 키 설정
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -29,6 +30,7 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
      - 하: ~하게 수행함
 
 각 항목에 대해 간결하고 명확하게 설명해 주세요.
+각 섹션의 시작에는 반드시 섹션 제목(예: '핵심 아이디어:', '핵심 개념:' 등)을 포함해 주세요.
     """
 
     response = openai.ChatCompletion.create(
@@ -37,12 +39,21 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
             {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=2000,
+        max_tokens=1500,
         n=1,
         temperature=0.7,
     )
 
     return response.choices[0].message['content'].strip()
+
+def parse_lesson_plan(lesson_plan):
+    sections = re.split(r'\n(?=\d+\.|\w+:)', lesson_plan)
+    parsed_plan = {}
+    for section in sections:
+        if ':' in section:
+            title, content = section.split(':', 1)
+            parsed_plan[title.strip()] = content.strip()
+    return parsed_plan
 
 def main():
     st.title("개념 기반 수업 설계 도구")
@@ -55,23 +66,12 @@ def main():
         if subject and achievement_standard and lesson_topic:
             with st.spinner("수업 설계 생성 중..."):
                 lesson_plan = generate_lesson_plan(subject, achievement_standard, lesson_topic)
+                parsed_plan = parse_lesson_plan(lesson_plan)
 
-            sections = lesson_plan.split("\n\n")
-            
-            st.subheader("핵심 아이디어")
-            st.write(sections[0])
+            for title, content in parsed_plan.items():
+                st.subheader(title)
+                st.write(content)
 
-            st.subheader("핵심 개념")
-            st.write(sections[1])
-
-            st.subheader("핵심 질문")
-            st.write(sections[2])
-
-            st.subheader("수업 활동 운영 계획")
-            st.write(sections[3])
-
-            st.subheader("평가 루브릭")
-            st.write(sections[4])
         else:
             st.warning("모든 필드를 입력해주세요.")
 
