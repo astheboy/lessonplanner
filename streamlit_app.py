@@ -1,9 +1,12 @@
 import streamlit as st
-import openai
+# import openai
+import google.generativeai as genai
 import os
 
 # OpenAI API 키 설정
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+# Google API 키 설정
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def generate_lesson_plan(subject, achievement_standard, lesson_topic):
     prompt = f"""
@@ -31,19 +34,24 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
 각 항목에 대해 간결하고 명확하게 설명해 주세요.
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=2000,
-        n=1,
-        temperature=0.7,
-    )
+   # response = openai.ChatCompletion.create(
+   #     model="gpt-4o-mini",
+   #     messages=[
+   #         {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
+   #         {"role": "user", "content": prompt}
+   #     ],
+   #     max_tokens=2000,
+   #     n=1,
+   #     temperature=0.7,
+   # )
 
-    return response.choices[0].message['content'].strip()
+   # return response.choices[0].message['content'].strip()
+    
+    model = genai.GenerativeModel('gemini-pro')
+    response = model.generate_content(prompt)
 
+    return response.text
+    
 def main():
     st.title("개념 기반 수업 설계 도구")
 
