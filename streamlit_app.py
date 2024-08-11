@@ -23,16 +23,18 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
 각 항목에 대해 간결하고 명확하게 설명해 주세요.
     """
 
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=500,
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",  # ChatGPT-4-mini 모델 사용
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=1000,
         n=1,
-        stop=None,
         temperature=0.7,
     )
 
-    return response.choices[0].text.strip()
+    return response.choices[0].message['content'].strip()
 
 def main():
     st.title("개념 기반 수업 설계 도구")
