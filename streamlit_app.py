@@ -18,18 +18,26 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
 2. 핵심 개념 (3-5개)
 3. 핵심 질문 (2-3개)
 4. 수업 활동 운영 계획 (3-5개 활동)
-5. 평가 루브릭 (3-4개 평가 기준)
+5. 평가 루브릭:
+   - 이 수업 활동을 위한 3-4개의 평가 요소를 제시하세요.
+   - 각 평가 요소에 대해 상중하 3단계의 평가 관점을 제시하세요.
+   - 각 평가 관점은 '~함'으로 끝나는 명사형 어미체로 작성하세요.
+   - 예시 형식:
+     평가요소1: 
+     - 상: ~하게 수행함
+     - 중: ~하게 수행함
+     - 하: ~하게 수행함
 
 각 항목에 대해 간결하고 명확하게 설명해 주세요.
     """
 
     response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",  # ChatGPT-4-mini 모델 사용
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=1000,
+        max_tokens=1500,
         n=1,
         temperature=0.7,
     )
