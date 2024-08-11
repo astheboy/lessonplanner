@@ -37,7 +37,7 @@ def generate_lesson_plan(subject, achievement_standard, lesson_topic):
             {"role": "system", "content": "You are a helpful assistant that creates lesson plans for elementary school teachers."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=1500,
+        max_tokens=2000,
         n=1,
         temperature=0.7,
     )
